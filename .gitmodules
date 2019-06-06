@@ -1,3 +1,4 @@
 [submodule "src/external/fiat-crypto"]
-	path = src/external/fiat-crypto
-	url = https://github.com/mit-plv/fiat-crypto
+        path = src/external/fiat-crypto
+        url = https://github.com/mit-plv/fiat-crypto
+        ignore = dirty

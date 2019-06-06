@@ -15,8 +15,6 @@
 use std::path::PathBuf;
 use std::{env, process::Command};
 
-pub const FIAT_HASH: &str = "2fdaa1024f39c1df1a6956e37970374b8bb5a9ba"; // latest commit in fiat-crypto master as of 05/28/2019
-
 macro_rules! get(($name:expr) => (ok!(env::var($name))));
 macro_rules! ok(($expression:expr) => ($expression.unwrap()));
 
@@ -41,12 +39,14 @@ fn main() {
     // path to our patches
     let patches = basedir.join("patches");
 
-    // cd to the fiat-crypto submodule and reset to the correct version
-    assert!(env::set_current_dir(&fiat_crypto).is_ok());
-    // Reset
-    run("git", |command| command.arg("reset").arg("--hard"));
-    // Checkout a particular fiat commit
-    run("git", |command| command.arg("checkout").arg(FIAT_HASH));
+    // get some data
+    assert!(env::set_current_dir(&basedir).is_ok());
+    if basedir.join(".git").exists() {
+        run("git", |command| {
+            command.arg("submodule").arg("update").arg("--init")
+        });
+    }
+
     // Go to the base directory
     assert!(env::set_current_dir(&basedir).is_ok());
 
