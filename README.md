@@ -13,3 +13,6 @@ demand its [compile-time requirements](https://github.com/alexcrichton/cc-rs#com
 
 This library is at an experimental stage and its API may encoutner
 significant evolutions in the future.
+
+## LICENSE
+rust-curve25519-dalek is Apache-2.0 licensed, as found in the [LICENSE](https://github.com/facebookexperimental/rust-curve25519-fiat/blob/master/LICENSE) file.
