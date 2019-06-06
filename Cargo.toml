@@ -1,0 +1,15 @@
+[package]
+name = "rust-curve25519-fiat"
+build = "build.rs"
+version = "0.1.0"
+authors = ["François Garillot <fga@fb.com>"]
+description = "Rust FFI bindings to fiat-crypto's curve25519_64.c"
+license = "Apache-2.0"
+edition="2018"
+
+[lib]
+test = false # we have no unit tests
+doctest = false # and no doc tests
+
+[build-dependencies]
+cc = "1.0"
