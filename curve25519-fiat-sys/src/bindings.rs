@@ -24,6 +24,7 @@ pub type fiat_25519_int128 = [u64; 2];
 #[allow(non_camel_case_types)]
 pub type fiat_25519_uint128 = [u64; 2];
 
+#[link(name = "curve25519_fiat_sys", kind = "static")]
 extern "C" {
     pub fn fiat_25519_addcarryx_u51(
         out1: *mut u64,
@@ -34,6 +35,7 @@ extern "C" {
     );
 }
 
+#[link(name = "curve25519_fiat_sys", kind = "static")]
 extern "C" {
     pub fn fiat_25519_subborrowx_u51(
         out1: *mut u64,
@@ -44,38 +46,47 @@ extern "C" {
     );
 }
 
+#[link(name = "curve25519_fiat_sys", kind = "static")]
 extern "C" {
     pub fn fiat_25519_cmovznz_u64(out1: *mut u64, arg1: fiat_25519_uint1, arg2: u64, arg3: u64);
 }
 
+#[link(name = "curve25519_fiat_sys", kind = "static")]
 extern "C" {
     pub fn fiat_25519_carry_mul(out1: *mut u64, arg1: *const u64, arg2: *const u64);
 }
 
+#[link(name = "curve25519_fiat_sys", kind = "static")]
 extern "C" {
     pub fn fiat_25519_carry_square(out1: *mut u64, arg1: *const u64);
 }
 
+#[link(name = "curve25519_fiat_sys", kind = "static")]
 extern "C" {
     pub fn fiat_25519_carry_scmul_121666(out1: *mut u64, arg1: *const u64);
 }
 
+#[link(name = "curve25519_fiat_sys", kind = "static")]
 extern "C" {
     pub fn fiat_25519_carry(out1: *mut u64, arg1: *const u64);
 }
 
+#[link(name = "curve25519_fiat_sys", kind = "static")]
 extern "C" {
     pub fn fiat_25519_add(out1: *mut u64, arg1: *const u64, arg2: *const u64);
 }
 
+#[link(name = "curve25519_fiat_sys", kind = "static")]
 extern "C" {
     pub fn fiat_25519_sub(out1: *mut u64, arg1: *const u64, arg2: *const u64);
 }
 
+#[link(name = "curve25519_fiat_sys", kind = "static")]
 extern "C" {
     pub fn fiat_25519_opp(out1: *mut u64, arg1: *const u64);
 }
 
+#[link(name = "curve25519_fiat_sys", kind = "static")]
 extern "C" {
     pub fn fiat_25519_selectznz(
         out1: *mut u64,
@@ -85,10 +96,12 @@ extern "C" {
     );
 }
 
+#[link(name = "curve25519_fiat_sys", kind = "static")]
 extern "C" {
     pub fn fiat_25519_to_bytes(out1: *mut u8, arg1: *const u64);
 }
 
+#[link(name = "curve25519_fiat_sys", kind = "static")]
 extern "C" {
     pub fn fiat_25519_from_bytes(out1: *mut u64, arg1: *const u8);
 }
