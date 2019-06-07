@@ -47,13 +47,11 @@ fn main() {
         });
     }
 
-    // Go to the base directory
-    assert!(env::set_current_dir(&basedir).is_ok());
-
     // patch that fiat file
     run("patch", |command| {
         command
             .arg("-t")
+            .arg("-l")
             .arg("-p3")
             .arg("-d")
             .arg(fiat_crypto.to_str().unwrap())
@@ -61,12 +59,10 @@ fn main() {
             .arg(patches.join("fiat_library.patch").to_str().unwrap())
     });
 
-    assert!(env::set_current_dir(&basedir).is_ok());
-
     cc::Build::new()
         .file("src/external/fiat-crypto/curve25519_64.c")
         .include("src/include/")
         .shared_flag(true)
         .static_flag(true)
-        .compile("curve25519_64");
+        .compile("curve25519_fiat_sys");
 }
