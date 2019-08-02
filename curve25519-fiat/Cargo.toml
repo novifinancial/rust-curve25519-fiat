@@ -1,13 +1,12 @@
 [package]
-name = "curve25519-fiat-sys"
+name = "curve25519-fiat"
 build = "build.rs"
 version = "0.1.10"
-authors = ["François Garillot <fga@fb.com>"]
-description = "Rust FFI bindings to fiat-crypto's curve25519_64.c"
+authors = ["Zoe Paraskevopoulou <zoe.paraskevopoulou@gmail.com>"]
+description = "Fiat-crypto generated Rust for curve25519_64.rs"
 repository = "https://github.com/facebookexperimental/rust-curve25519-fiat"
 readme = "README.md"
 license = "Apache-2.0"
-links = "curve25519-fiat-sys"
 edition="2018"
 
 [lib]

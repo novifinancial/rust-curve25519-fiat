@@ -13,4 +13,4 @@
 // limitations under the License.
 
 #[allow(non_camel_case_types)]
-include!("bindings.rs");
+pub mod curve25519_64;

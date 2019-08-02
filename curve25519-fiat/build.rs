@@ -18,6 +18,9 @@ use std::{env, process::Command};
 macro_rules! get(($name:expr) => (ok!(env::var($name))));
 macro_rules! ok(($expression:expr) => ($expression.unwrap()));
 
+pub const FIAT_REPO: &str = "https://github.com/mit-plv/fiat-crypto.git";
+pub const FIAT_HASH: &str = "4525bb97d37cad5dc3db5552f865bce113d00949";
+
 fn run<F>(name: &str, mut configure: F)
 where
     F: FnMut(&mut Command) -> &mut Command,
@@ -32,37 +35,26 @@ where
 fn main() {
     // this folder
     let basedir = PathBuf::from(&get!("CARGO_MANIFEST_DIR"));
-
+    let src_dir = basedir.join("src");
+    // println!("Dir is: {:?}", basedir);
     // the fiat-crypto submodule
     let fiat_crypto = basedir.join("src").join("external").join("fiat-crypto");
 
-    // path to our patches
-    let patches = basedir.join("patches");
-
     // get some data
-    assert!(env::set_current_dir(&basedir).is_ok());
-    if basedir.join(".git").exists() {
-        run("git", |command| {
-            command.arg("submodule").arg("update").arg("--init")
-        });
-    }
-
-    // patch that fiat file
-    run("patch", |command| {
-        command
-            .arg("-t")
-            .arg("-l")
-            .arg("-p3")
-            .arg("-d")
-            .arg(fiat_crypto.to_str().unwrap())
-            .arg("-i")
-            .arg(patches.join("fiat_library.patch").to_str().unwrap())
+    run("git", |command| {
+        command.arg("submodule").arg("update").arg("--init")
     });
+    // Go to the fiat directory
+    assert!(env::set_current_dir(&fiat_crypto).is_ok());
+    // Checkout a particular dalek commit
+    run("git", |command| command.arg("checkout").arg(FIAT_HASH));
+    // Go to the base directory
+    assert!(env::set_current_dir(&basedir).is_ok());
 
-    cc::Build::new()
-        .file("src/external/fiat-crypto/curve25519_64.c")
-        .include("src/include/")
-        .shared_flag(true)
-        .static_flag(true)
-        .compile("curve25519_fiat_sys");
+    // move the curve25519_64 file from fiat to src/
+    run("cp", |command| {
+        command
+            .arg(fiat_crypto.join("fiat-rust").join("src").join("curve25519_64.rs"))
+            .arg(&src_dir)
+    });
 }
