@@ -12,6 +12,3 @@ edition="2018"
 [lib]
 test = false # we have no unit tests
 doctest = false # and no doc tests
-
-[build-dependencies]
-cc = "1.0"
