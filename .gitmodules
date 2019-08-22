@@ -1,3 +1,4 @@
 [submodule "fiat-crypto"]
-	path = curve25519-fiat/src/external/fiat-crypto
-	url = https://github.com/mit-plv/fiat-crypto.git
+        path = curve25519-fiat/src/external/fiat-crypto
+        url = https://github.com/mit-plv/fiat-crypto.git
+        ignore = dirty
