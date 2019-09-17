@@ -19,7 +19,7 @@ macro_rules! get(($name:expr) => (ok!(env::var($name))));
 macro_rules! ok(($expression:expr) => ($expression.unwrap()));
 
 pub const FIAT_REPO: &str = "https://github.com/mit-plv/fiat-crypto.git";
-pub const FIAT_HASH: &str = "4525bb97d37cad5dc3db5552f865bce113d00949";
+pub const FIAT_HASH: &str = "c96f983228d08c74254004b0bc101d3f6ff8b051";
 
 fn run<F>(name: &str, mut configure: F)
 where
