@@ -1,0 +1,30 @@
+name: Continuous Integration
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        rust: [stable, beta, nightly]
+
+    steps:
+      - name: Mac CPU info
+        if: matrix.os == 'macOS-latest'
+        run: sysctl -a | grep machdep
+      - name: Lunix CPU info
+        if: matrix.os == 'ubuntu-latest'
+        run: cat /proc/cpuinfo
+      - uses: hecrj/setup-rust-action@v1
+        with:
+          rust-version: ${{ matrix.rust }}
+      - uses: actions/checkout@v1
+      - name: Run build
+        working-directory: ./curve-25519-fiat
+        run: cargo build
