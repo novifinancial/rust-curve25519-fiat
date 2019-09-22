@@ -26,5 +26,5 @@ jobs:
           rust-version: ${{ matrix.rust }}
       - uses: actions/checkout@v1
       - name: Run build
-        working-directory: ./curve-25519-fiat
+        working-directory: ./curve25519-fiat
         run: cargo build
