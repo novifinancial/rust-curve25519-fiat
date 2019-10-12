@@ -20,6 +20,13 @@ macro_rules! ok(($expression:expr) => ($expression.unwrap()));
 
 pub const FIAT_REPO: &str = "https://github.com/mit-plv/fiat-crypto.git";
 pub const FIAT_HASH: &str = "c96f983228d08c74254004b0bc101d3f6ff8b051";
+pub const FIAT_FILE_HASH: [u8; 32] = [
+    0xde, 0x8f, 0x2c, 0x6a, 0x1d, 0x20, 0xc2, 0x53, 0x81, 0x85, 0x82, 0xfc, 0x6c, 0x78, 0x91, 0x96,
+    0x27, 0xd3, 0xf, 0xc7, 0x5a, 0x27, 0x7b, 0x57, 0x5c, 0xb1, 0x58, 0x5d, 0x6b, 0xd9, 0xa2, 0x2d,
+];
+
+use sha2::{Digest, Sha256};
+use std::{fs, io};
 
 fn run<F>(name: &str, mut configure: F)
 where
@@ -38,23 +45,48 @@ fn main() {
     let src_dir = basedir.join("src");
     // println!("Dir is: {:?}", basedir);
     // the fiat-crypto submodule
-    let fiat_crypto = basedir.join("src").join("external").join("fiat-crypto");
+    let fiat_crypto = basedir.join("external").join("fiat-crypto");
 
     // get some data
     run("git", |command| {
-        command.arg("submodule").arg("update").arg("--init")
+        command
+            .arg("submodule")
+            .arg("update")
+            .arg("--init")
+            .arg("--recursive")
+            .arg("--checkout")
     });
-    // Go to the fiat directory
-    assert!(env::set_current_dir(&fiat_crypto).is_ok());
-    // Checkout a particular dalek commit
-    run("git", |command| command.arg("checkout").arg(FIAT_HASH));
+    let cond = if let Ok(mut file) = fs::File::open(
+        &fiat_crypto
+            .join("fiat-rust")
+            .join("src")
+            .join("curve25519_64.rs"),
+    ) {
+        let mut sha256 = Sha256::new();
+        io::copy(&mut file, &mut sha256).expect("failed to copy file");
+        let hash = sha256.result();
+        hash[..] == FIAT_FILE_HASH
+    } else {
+        false
+    };
+    if !cond {
+        // Go to the fiat directory
+        assert!(env::set_current_dir(&fiat_crypto).is_ok());
+        // Checkout a particular dalek commit
+        run("git", |command| command.arg("checkout").arg(FIAT_HASH));
+    }
     // Go to the base directory
     assert!(env::set_current_dir(&basedir).is_ok());
 
     // move the curve25519_64 file from fiat to src/
     run("cp", |command| {
         command
-            .arg(fiat_crypto.join("fiat-rust").join("src").join("curve25519_64.rs"))
+            .arg(
+                fiat_crypto
+                    .join("fiat-rust")
+                    .join("src")
+                    .join("curve25519_64.rs"),
+            )
             .arg(&src_dir)
     });
 }

@@ -1,5 +1,5 @@
 [submodule "fiat-crypto"]
-        path = curve25519-fiat/src/external/fiat-crypto
+	path = curve25519-fiat/external/fiat-crypto
         url = https://github.com/mit-plv/fiat-crypto.git
         update = checkout
         fetchRecurseSubmodules = true
