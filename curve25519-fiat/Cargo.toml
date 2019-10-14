@@ -1,7 +1,7 @@
 [package]
 name = "curve25519-fiat"
 build = "build.rs"
-version = "0.1.0"
+version = "0.1.4"
 authors = ["François Garillot <fga@fb.com>"]
 description = "Fiat-crypto generated Rust for curve25519_64"
 repository = "https://github.com/facebookexperimental/rust-curve25519-fiat"
