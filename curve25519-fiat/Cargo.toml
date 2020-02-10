@@ -12,7 +12,6 @@ edition="2018"
 [build-dependencies]
 sha2 = "0.8.0"
 
-
 [lib]
 test = false # we have no unit tests
 doctest = false # and no doc tests
